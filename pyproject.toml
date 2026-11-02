@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "screen-overlay"
+version = "0.1.0"
+description = "Transparent reference images above a Windows drawing canvas"
+readme = "README.md"
+requires-python = ">=3.12"
+authors = [{name = "Dimash Janibekov"}]
+dependencies = ["PySide6-Essentials==6.12.0"]
+
+[project.gui-scripts]
+screen-overlay = "screen_overlay.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["screen_overlay*"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I", "UP", "B"]
+
+[tool.ruff.format]
+quote-style = "double"
