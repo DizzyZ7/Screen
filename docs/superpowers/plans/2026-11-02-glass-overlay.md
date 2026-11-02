@@ -35,12 +35,12 @@ Interfaces: Placement(center_x, center_y, width, height, rotation); local_to_wor
 world_to_local, zoom_at, resized; load_image(path), clipboard_image(mime);
 save_project(path, image, placement, opacity, flips), load_project(path).
 
-- [ ] Написать и запустить падающие unittest для zoom-anchor, повернутого resize,
+- [x] Написать и запустить падающие unittest для zoom-anchor, повернутого resize,
   независимых размеров, ограничений и нечисловых значений.
-- [ ] Реализовать геометрию, добиться прохождения тестов.
-- [ ] Написать и запустить падающие тесты файлов/буфера и project roundtrip,
+- [x] Реализовать геометрию, добиться прохождения тестов.
+- [x] Написать и запустить падающие тесты файлов/буфера и project roundtrip,
   некорректных данных и атомарного сохранения.
-- [ ] Реализовать загрузку и проекты; python -m unittest discover -s tests -v должен пройти.
+- [x] Реализовать загрузку и проекты; python -m unittest discover -s tests -v должен пройти.
 
 ### Task 2: Оверлей, панель и Win32
 
@@ -49,18 +49,27 @@ Files: screen_overlay/{overlay,native,panel,app,__main__,__init__}.py, tests/tes
 Interfaces: OverlayWindow.changed(Placement), mode_requested; Controller управляет
 изображением/геометрией/видимостью; HotkeyManager callback по имени действия.
 
-- [ ] Написать падающие Qt-тесты прозрачного рендера, непрозрачности, ввода,
+- [x] Написать падающие Qt-тесты прозрачного рендера, непрозрачности, ввода,
   смены режима, изменения размера, открытия/ошибки и восстановления панели.
-- [ ] Реализовать отдельные прозрачные окна и русскую панель; тесты должны пройти.
-- [ ] Добавить Windows-only тесты реальных native-стилей, доставки WM_HOTKEY и прохода клика.
-- [ ] Проверить GUI визуально через screenshot и view_image.
+- [x] Реализовать отдельные прозрачные окна и русскую панель; тесты должны пройти.
+- [x] Добавить Windows-only тесты реальных native-стилей, доставки WM_HOTKEY и прохода клика.
+- [x] Проверить GUI визуально через screenshot и view_image.
 
 ### Task 3: Сборка и передача
 
 Files: pyproject.toml, requirements*.txt, scripts/build_windows.ps1, Screen.spec,
-.github/workflows/ci.yml, README.md, LICENSE, THIRD_PARTY_NOTICES.md.
+.github/workflows/ci.yml, README.md, licenses/, THIRD_PARTY_NOTICES.md.
 
-- [ ] Добавить воспроизводимые зависимости, запуск из исходников и portable-сборку.
-- [ ] Настроить Linux/Windows CI, тесты и запуск упакованного exe; загрузить ZIP artifact.
-- [ ] Выполнить Ruff, unittest и smoke-test, независимое ревью; исправить существенные находки.
-- [ ] Опубликовать код в репозитории, проверить Actions; передать инструкцию и ссылку на сборку.
+- [x] Добавить воспроизводимые зависимости, запуск из исходников и portable-сборку.
+- [x] Настроить Linux/Windows CI, тесты и запуск упакованного exe; загрузить ZIP artifact.
+- [x] Выполнить Ruff, unittest и smoke-test, независимое ревью; исправить существенные находки.
+- [x] Опубликовать код в репозитории, проверить Actions; передать инструкцию и ссылку на сборку.
+
+## Verification — 2026-11-02
+
+- Независимое ревью завершено; ошибки порядка окон и округления размеров исправлены с RED→GREEN проверками.
+- Windows: 35/35 тестов, включая настройка/обводка/настройка и перекрытие панели.
+- Linux: 32 успешных теста, 3 native Windows-only пропуска; Ruff и smoke-test пройдены.
+- Упакованный Windows exe прошел smoke-test. Main workflow: https://github.com/DizzyZ7/Screen/actions/runs/41423793064 .
+- Предварительная версия опубликована: https://github.com/DizzyZ7/Screen/releases/tag/v0.1.0 .
+- Физическое перо, конкретный редактор и смешанный DPI остаются проверкой на пользовательском ПК.
