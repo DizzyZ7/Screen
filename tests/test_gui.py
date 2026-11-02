@@ -18,6 +18,16 @@ APP = QApplication.instance() or QApplication([])
 
 
 class GuiTests(unittest.TestCase):
+    def test_visible_panel_is_raised_after_each_input_mode_transition(self):
+        from unittest.mock import patch
+
+        with patch.object(self.c.panel, "raise_") as raised:
+            self.c.set_tracing(True)
+            raised.assert_called()
+            raised.reset_mock()
+            self.c.set_tracing(False)
+            raised.assert_called()
+
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)

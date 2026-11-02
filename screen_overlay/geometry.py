@@ -61,8 +61,8 @@ class Placement:
         )
         return replace(
             self,
-            width=self.width * factor,
-            height=self.height * factor,
+            width=bounded_size(self.width * factor),
+            height=bounded_size(self.height * factor),
             center_x=x + (self.center_x - x) * factor,
             center_y=y + (self.center_y - y) * factor,
         )
@@ -111,7 +111,7 @@ class Placement:
                 max(MIN_SIZE / self.width, MIN_SIZE / self.height),
                 min(min(MAX_SIZE / self.width, MAX_SIZE / self.height), factor),
             )
-            w, h = self.width * factor, self.height * factor
+            w, h = bounded_size(self.width * factor), bounded_size(self.height * factor)
         else:
             w, h = bounded_size(raw_w), bounded_size(raw_h)
         # Use the OLD transform to keep the opposite corner/edge midpoint fixed.
@@ -135,9 +135,11 @@ class Placement:
         x, y, sw, sh = screen
         factor = min(sw * 0.8 / width, sh * 0.8 / height, 1.0)
         factor = max(factor, MIN_SIZE / width, MIN_SIZE / height)
-        if max(width, height) * factor > MAX_SIZE:
+        if max(width, height) / min(width, height) > MAX_SIZE / MIN_SIZE:
             raise ValueError(
                 "Слишком узкое изображение для этих пределов размера. "
                 "Добавь поля к картинке перед открытием."
             )
-        return cls(x + sw / 2, y + sh / 2, width * factor, height * factor)
+        return cls(
+            x + sw / 2, y + sh / 2, bounded_size(width * factor), bounded_size(height * factor)
+        )

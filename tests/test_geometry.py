@@ -5,6 +5,22 @@ from screen_overlay.geometry import Placement
 
 
 class GeometryTests(unittest.TestCase):
+    def test_scaling_endpoints_never_escape_limits_due_to_rounding(self):
+        for width, height in ((47, 100), (100, 47), (143, 257), (257, 143)):
+            p = Placement(0, 0, width, height, 37)
+            for factor in (0.00001, 1e6):
+                q = p.zoom_at(factor, 10, 20)
+                self.assertTrue(24 <= q.width <= 16384)
+                self.assertTrue(24 <= q.height <= 16384)
+                self.assertAlmostEqual(q.width / q.height, p.width / p.height)
+            for size in (24, 16384):
+                self.assertIsInstance(p.with_width(size, True), Placement)
+                self.assertIsInstance(p.with_height(size, True), Placement)
+            for x, y in ((-10000, -10000), (1e6, 1e6)):
+                q = p.resized("se", x, y, True)
+                self.assertTrue(24 <= q.width <= 16384)
+                self.assertTrue(24 <= q.height <= 16384)
+
     def test_rotated_coordinates_roundtrip(self):
         p = Placement(-500, 250, 300, 150, 37)
         x, y = p.local_to_world(80, -44)

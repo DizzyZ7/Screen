@@ -259,6 +259,9 @@ class Controller(QObject):
         self.tracing = enabled
         self._input_ready = True
         self.refresh()
+        # Native HWND_TOPMOST transitions also reorder topmost peers. Keep controls reachable.
+        if self.panel.isVisible() and not self.panel.isMinimized():
+            self.panel.raise_()
         return True
 
     def toggle_tracing(self):
